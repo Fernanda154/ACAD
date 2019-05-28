@@ -6,9 +6,8 @@ public class Turma {
 	private String turno;
 	private int sala;
 	private String codigo;
-	private Professor prof;
-	private HashMap<Integer, Aluno> alunos = new HashMap<Integer, Aluno>(); 
-
+	private Professor prof; 
+	private ArrayList<Aluno> alunos = new ArrayList();
 	
 	public Turma() {
 		
@@ -16,17 +15,18 @@ public class Turma {
 
 	public Turma(String descricao, String turno, int sala) {
 		super();
-		this.alunos = new HashMap<Integer, Aluno>();
+		this.alunos = new ArrayList<Aluno>();
 		this.descricao = descricao;
 		this.turno = turno;
 		this.sala = sala;
 	}
 	
-	public HashMap<Integer, Aluno> getAlunos() {
+
+	public ArrayList<Aluno> getAlunos() {
 		return alunos;
 	}
 
-	public void setAlunos(HashMap<Integer, Aluno> alunos) {
+	public void setAlunos(ArrayList<Aluno> alunos) {
 		this.alunos = alunos;
 	}
 
@@ -69,24 +69,31 @@ public class Turma {
 	public void setSala(int sala) {
 		this.sala = sala;
 	}
-	
-	//--------------------------------  MÃ‰TODOS DE TURMA  --------------------------
 
 //------------------------------------------ MÃ‰TODO DE ALUNO --------------------------------
 	//Insere um aluno
-	public void inserirAlunos(int matricula, Aluno aluno) {
-		if(this.alunos.isEmpty()) {
-			this.alunos.put(matricula, aluno);
-		}else {
-			if(this.alunos.containsKey(matricula)) {
-				System.out.println("ERRO : Aluno já está matriculado.");
+	public void inserirAlunos(Aluno aluno) {
+		Boolean temOUnao = false;
+		for(int i = 0; i < alunos.size(); i++) {
+			Aluno teste = alunos.get(i);
+			
+			if(teste.getMatricula() == aluno.getMatricula()) {
+				temOUnao = true;
+			}else {
+				temOUnao = false;
 			}
 		}
-		if(alunos == null) {
-			System.out.println("Não inseriu");
+		if(temOUnao) {
+			System.out.println("Aluno já matriculado.");
+		}else {
+			alunos.add(aluno);
 		}
+		if(alunos.contains(aluno)) {
+			System.out.println("Aluno inserido.");
+		}
+		
 	}
-	
+	/*
 	public Aluno buscarAluno(int matricula) {
 		Aluno kid = null;
 		if(this.alunos.containsKey(matricula)) {
@@ -99,33 +106,45 @@ public class Turma {
 		return kid;
 		
 	}
-	
+	*/
 	public void listarAlunos() {
-
-		for(int matricula : alunos.keySet()) {
-			Aluno alunoEncontrado = alunos.get(matricula);
-			System.out.println(alunoEncontrado.getNome());
+		if(alunos == null) {
+			System.out.println("Não inseriu");
+		}else {
+			for(int i = 0; i < alunos.size(); i++) {
+				Aluno aux = alunos.get(i);
+				System.out.println(aux.getNome() + " MATRÍCULA: " + aux.getMatricula());
+			}
 		}
+		System.out.println(alunos.size());
 		
 	}
-	public void removerAluno(String matricula) {
-		if(this.alunos.containsKey(matricula)) {
-			alunos.remove(matricula);
-		}else {
-			System.out.println("VocÃª nÃ£o pode remover quem nunca inseriu baby.");
+	
+	public void removerAluno(int matricula) {
+		
+		for(int i = 0; i < alunos.size(); i++) {
+			Aluno teste = alunos.get(i);
+			
+			if(teste.getMatricula() == matricula) {
+				alunos.remove(alunos.get(i));
+				break;
+			}
+			
 		}
+		
 		
 	}
 	//-------------------------------------------------- MÉTODOS DE INSERÇÃO -----------------------------------------
 	
-	public void inserirProfessor(String codigo, Professor prof) {
+	public void inserirProfessor(Professor prof) {
 		if(this.prof == null) {
 			this.prof = prof;
 		}
 	}
-	public Professor buscarProfessor(String codigo) {
-		Professor prof = new Professor();
-		return prof;
+	public void removerProfessor(int matricula) {
+		if(prof.getMatricula() == matricula) {
+			prof = null;
+		}
 	}
 	
 

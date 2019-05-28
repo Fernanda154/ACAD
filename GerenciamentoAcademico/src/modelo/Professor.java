@@ -2,14 +2,13 @@ package modelo;
 
 public class Professor extends Pessoa{
 	private double salario;
-	private String matricula;
+	private int matricula;
 	
 	public Professor() {
 		
 	}
 	
-	public Professor(double salario, String matricula) {
-		super();
+	public Professor(double salario, int matricula) {
 		this.salario = salario;
 		this.matricula = matricula;
 	}
@@ -23,11 +22,11 @@ public class Professor extends Pessoa{
 		this.salario = salario;
 	}
 
-	public String getMatricula() {
+	public int getMatricula() {
 		return matricula;
 	}
 
-	public void setMatricula(String matricula) {
+	public void setMatricula(int matricula) {
 		this.matricula = matricula;
 	}
 

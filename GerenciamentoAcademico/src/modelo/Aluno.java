@@ -2,19 +2,34 @@ package modelo;
 
 public class Aluno extends Pessoa {
 	private int matricula;
-	Turma turma[];
 	private double[] notas;
 	private double frequencia;
-	
-	private int aulasDadas;
+
 	private int faltas;
-	
+	private boolean atuante;
 	
 	public Aluno() {
 		
 	}
 
-	public Aluno(int matricula, int aulasDadas, int faltas) {
+
+	public int getFaltas() {
+		return faltas;
+	}
+
+	public void setFaltas(int faltas) {
+		this.faltas = faltas;
+	}
+
+	public boolean isAtuante() {
+		return atuante;
+	}
+
+	public void setAtuante(boolean atuante) {
+		this.atuante = atuante;
+	}
+
+	public Aluno(int matricula) {
 		this.matricula = matricula;
 	}
 
@@ -53,21 +68,5 @@ public class Aluno extends Pessoa {
 		return this.notas;
 	}
 	
-	//------------------------------  MÉTODOS PARA FREQUÊNCIA  -----------------------------
-	
-	public void inserirFrequencia(int falta, int quantAulas) {
-		// Insere frequencia em media do aluno em %
-		this.aulasDadas = aulasDadas + quantAulas;
-		this.faltas = faltas + falta;
-		int presenca = aulasDadas - faltas;
-		this.frequencia = presenca*100/aulasDadas;
-	}
-	public double buscarFrequencia(String matricula) {
-		// Retorna a frequência média do aluno
-		return this.frequencia;
-	}
-	public void atualizarFrequencia(int falta, int quantAulas) {
-		//Atualizar frequencia media do aluno
-		
-	}
+
 }
