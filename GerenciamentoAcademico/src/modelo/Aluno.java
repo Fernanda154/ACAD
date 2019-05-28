@@ -14,7 +14,7 @@ public class Aluno extends Pessoa {
 		
 	}
 
-	public Aluno(int matricula) {
+	public Aluno(int matricula, int aulasDadas, int faltas) {
 		this.matricula = matricula;
 	}
 
