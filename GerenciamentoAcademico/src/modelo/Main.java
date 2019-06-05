@@ -147,16 +147,14 @@ public class Main {
 			if(operacao == 8) {
 				lendo.nextLine(); // esvazia o buffer do teclado, para poder ler strings agora.
 				System.out.println("Digite o código da turma: ");
-				String codigoTurma = lendo.nextLine();
-				System.out.println("Digite a matrícula do professor a ser removido: ");
-				int matricula = lendo.nextInt();
-				turma.removerProfessor(matricula);
+				String codigoDaTurma = lendo.next();
+				gerenciamento.removerProfessor(codigoDaTurma);
 			}
 			if(operacao == 9) {
 				gerenciamento.listarTurmas();
 				
 				System.out.println("Digite o código da turma a qual o professor irá ministrar aula:");
-				int codigoTurma = lendo.nextInt();
+				String codigoTurma = lendo.next();
 				System.out.println("Digite a matrícula do professor: ");
 				int matricula = lendo.nextInt();
 				gerenciamento.inserirProfessorNaTurma(codigoTurma, matricula);
@@ -164,7 +162,7 @@ public class Main {
 			if(operacao == 10) {
 				gerenciamento.listarTurmas();
 				System.out.println("Digite o código da turma:");
-				int codigoTurma = lendo.nextInt();
+				String codigoTurma = lendo.next();
 				gerenciamento.buscarProfessor(codigoTurma);
 			}
 			System.out.println("------------MENU ADMMINISTRATIVO------------");

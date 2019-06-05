@@ -42,10 +42,10 @@ public class GerenciamentoAcademico {
 	}
 	
 	//Registra um professor numa turma
-	public void inserirProfessorNaTurma(int codigo, int matricula) {
+	public void inserirProfessorNaTurma(String codigo, int matricula) {
 		for(int i = 0; i < turmas.size(); i++) {
 			Turma aux = turmas.get(i);
-			if(codigo == i) {
+			if(aux.getCodigo().equals(codigo)) {
 				System.out.println("Turma encontrada");
 				for(int k = 0; k < professoresRP.size(); k ++) {
 					if(matricula == professoresRP.get(k).getMatricula() ) {
@@ -63,12 +63,23 @@ public class GerenciamentoAcademico {
 	}
 	
 	//Lista o professor da turma
-	public void buscarProfessor(int codigo) {
+	public void buscarProfessor(String codigo) {
 		for(int i = 0; i<turmas.size();i++) {
-			if(codigo == i) {
+			Turma aux = turmas.get(i);
+			if(aux.getCodigo().equals(codigo)){
 				String nome = turmas.get(i).getProf().getNome();
 				int matricula = turmas.get(i).getProf().getMatricula();
 				System.out.println(nome + " MATRÍCULA: " + matricula);
+			}
+		}
+	}
+	public void removerProfessor(String codigo) {
+		for(int i = 0; i<turmas.size();i++) {
+			Turma aux = turmas.get(i);
+			if(aux.getCodigo().equals(codigo)){
+				aux.setProf(null);
+			}else {
+				System.out.println("Turma não encontrada");
 			}
 		}
 	}
