@@ -24,16 +24,20 @@ public class Main {
 		Scanner lendo = new Scanner(System.in);
 		System.out.println("------------MENU ADMMINISTRATIVO------------");
 		System.out.println("00 - SAIR");
-		System.out.println("01 - INSERIR ALUNO");
+		System.out.println("01 - INSERIR ALUNO NO SISTEMA");
 		System.out.println("02 - INSERIR TURMA");
 		System.out.println("03 - LISTAR TURMAS");
 		System.out.println("04 - LISTAR ALUNOS");
-		System.out.println("05 - INSERIR PROFESSOR");
+		System.out.println("05 - INSERIR PROFESSOR NO SISTEMA");
 		System.out.println("06 - LISTAR PROFESSORES");
 		System.out.println("07 - REMOVER ALUNO");
 		System.out.println("08 - REMOVER PROFESSOR");
 		System.out.println("09 - INSERIR PROFESSOR NA TURMA");
 		System.out.println("10 - BUSCAR PROFESSOR");
+		System.out.println("11 - ATUALIZAR DADOS DO PROFESSOR");
+		System.out.println("12 - ATUALIZAR DADOS DO ALUNO");
+		System.out.println("13 - ATUALIZAR DADOS DA TURMA");
+		System.out.println("14 - BUSCAR TURMAS DE ALUNO");
 		int operacao = lendo.nextInt();
 		while(operacao !=0) {
 			if(operacao == 01) {
@@ -42,47 +46,45 @@ public class Main {
 				
 				lendo.nextLine(); // esvazia o buffer do teclado, para poder ler strings agora.
 				
-				System.out.println("Digite o nome do aluno: ");
+				System.out.println("DIGITE O NOME DO ALUNO: ");
 				String nome = lendo.nextLine();
 				kid.setNome(nome);
 				
-				System.out.println("Digite o CPF do aluno: ");
+				System.out.println("DIGITE O CPF DO ALUNO: ");
 				String cpf = lendo.nextLine();
 				kid.setCpf(cpf);
 				
-				System.out.println("Digite o endereço: ");
+				System.out.println("DIGITE O ENDEREÇO: ");
 				String endereco = lendo.nextLine();
 				kid.setEndereco(endereco);
 				
-				System.out.println("Digite seu telefone: ");
+				System.out.println("DIGITE SEU TELEFONE: ");
 				String telefone = lendo.nextLine();
 				kid.setTelefone(telefone);
 				
-				System.out.println("Digite uma senha para uso contínuo: ");
+				System.out.println("DIGITE UMA SENHA PARA USO CONTÍNUO: ");
 				String senha = lendo.nextLine();
 				kid.setSenha(senha);
 				
 				matriculaAlunos = matriculaAlunos+1;
 				kid.setMatricula(matriculaAlunos);
 				
-				System.out.println("Digite o código da turma a qual o aluno pertencerá: ");
-				String codigoTurma = lendo.next(); 
-
 				gerenciamento.inserirAlunoNoSistema(kid);
 			}
 			if(operacao == 02) {
+				System.out.println("------------------------------------Inserção de Turma--------------------------------");
 				turma = new Turma();
 				lendo.nextLine(); // esvazia o buffer do teclado, para poder ler strings agora.
 				
-				System.out.println("Digite o nome da displina: ");
+				System.out.println("DIGITE O NOME DA DISCIPLINA: ");
 				String descricao = lendo.nextLine();
 				turma.setDescricao(descricao);
 				
-				System.out.println("Digite o turno: ");
+				System.out.println("DIGITE O TURNO: ");
 				String turno = lendo.nextLine();
 				turma.setTurno(turno);
 				
-				System.out.println("Digite o número da sala: ");
+				System.out.println("DIGITE O NÚMERO DA SALA: ");
 				int sala = lendo.nextInt();
 				turma.setSala(sala);
 				
@@ -97,16 +99,15 @@ public class Main {
 				System.out.println(codigo); 
 			}
 			if(operacao == 03) {
+				System.out.println("------------------------------------Listar Turmas--------------------------------");
 				gerenciamento.listarTurmas();
 			}
 			if(operacao == 04) {
-				lendo.nextLine(); // esvazia o buffer do teclado, para poder ler strings agora.
-				System.out.println("Digite o código da turma: ");
-				String codigoTurma = lendo.next();
+				System.out.println("------------------------------------Listar Alunos--------------------------------");
 				gerenciamento.listarAlunos();
 			}
 			if(operacao == 05) {
-
+				System.out.println("------------------------------Inserção de Professor no Sistema-------------------------");
 				lendo.nextLine(); // esvazia o buffer do teclado, para poder ler strings agora.
 				System.out.println("Digite o nome do professor: ");
 				String nome = lendo.nextLine();
@@ -118,8 +119,6 @@ public class Main {
 				String telefone = lendo.nextLine();
 				System.out.println("Digite uma senha para uso contínuo: ");
 				String senha = lendo.nextLine();
-				System.out.println("Digite o salário do novo professor: ");
-				double salario = lendo.nextDouble();
 				
 				matriculaProfessores = matriculaProfessores +1;
 				prof = new Professor();
@@ -128,42 +127,57 @@ public class Main {
 				prof.setEndereco(endereco);
 				prof.setTelefone(telefone);
 				prof.setSenha(senha);
-				prof.setSalario(salario);
 				prof.setMatricula(matriculaProfessores);
 				gerenciamento.inserirProfessorNoSistema(prof);
 			}
 			if(operacao == 06) {
+				System.out.println("------------------------------------Listar Professores--------------------------------");
 				lendo.nextLine(); // esvazia o buffer do teclado, para poder ler strings agora.
-
 				gerenciamento.listarProfessores();
 				
 			}
 			if(operacao == 07) {
-				turma.listarAlunos();
-				System.out.println("Digite a matricula do aluno a ser removido: ");
+				System.out.println("------------------------------------Remoção de Aluno--------------------------------");
+				lendo.nextLine(); // esvazia o buffer do teclado, para poder ler strings agora.
+				gerenciamento.listarTurmas();
+				System.out.println("DIGITE O CÓDIGO DA TURMA: ");
+				String codigoTurma = lendo.next();
+				gerenciamento.listarAlunos();
+				System.out.println("DIGITE A MATRÍCULA: ");
 				int matricula = lendo.nextInt();
-				turma.removerAluno(matricula);
+				gerenciamento.removerAluno(codigoTurma, matricula);
 			}
 			if(operacao == 8) {
+				System.out.println("------------------------------------Remoção de Professor--------------------------------");
 				lendo.nextLine(); // esvazia o buffer do teclado, para poder ler strings agora.
-				System.out.println("Digite o código da turma: ");
+				System.out.println("DIGITE O CÓDIGO DA TURMA: ");
 				String codigoDaTurma = lendo.next();
-				gerenciamento.removerProfessor(codigoDaTurma);
+				System.out.println("DIGITE A MATRÍCULA DO PROFESSOR: ");
+				int matricula = lendo.nextInt();
+				gerenciamento.removerProfessor(codigoDaTurma, matricula);
 			}
 			if(operacao == 9) {
+				System.out.println("------------------------------Inserção de Professor em Turma----------------------------");
 				gerenciamento.listarTurmas();
-				
-				System.out.println("Digite o código da turma a qual o professor irá ministrar aula:");
+				System.out.println("DIGITE O CÓDIGO DA TURMA A QUAL O PROFESSOR IRÁ MINISTRAR AULA:");
 				String codigoTurma = lendo.next();
-				System.out.println("Digite a matrícula do professor: ");
+				gerenciamento.listarProfessores();
+				System.out.println("DIGITE A MATRÍCULA DO PROFESSOR: ");
 				int matricula = lendo.nextInt();
 				gerenciamento.inserirProfessorNaTurma(codigoTurma, matricula);
 			}
 			if(operacao == 10) {
 				gerenciamento.listarTurmas();
-				System.out.println("Digite o código da turma:");
+				System.out.println("DIGITE O CÓDIGO DA TURMA: ");
 				String codigoTurma = lendo.next();
 				gerenciamento.buscarProfessor(codigoTurma);
+			}
+			if(operacao == 14) {
+				gerenciamento.listarAlunos();
+				System.out.println("DIGITE A MATRÍCULA DO ALUNO: ");
+				int matricula = lendo.nextInt();
+				gerenciamento.listarTurmasDoAluno(matricula);
+				
 			}
 			System.out.println("------------MENU ADMMINISTRATIVO------------");
 			System.out.println("00 - SAIR");
@@ -177,6 +191,10 @@ public class Main {
 			System.out.println("08 - REMOVER PROFESSOR");
 			System.out.println("09 - INSERIR PROFESSOR NA TURMA");
 			System.out.println("10 - BUSCAR PROFESSOR");
+			System.out.println("11 - ATUALIZAR DADOS DO PROFESSOR");
+			System.out.println("12 - ATUALIZAR DADOS DO ALUNO");
+			System.out.println("13 - ATUALIZAR DADOS DA TURMA");
+			System.out.println("14 - BUSCAR TURMAS DE ALUNO");
 			operacao = lendo.nextInt();
 			
 		}

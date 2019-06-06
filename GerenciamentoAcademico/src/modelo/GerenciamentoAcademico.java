@@ -21,24 +21,76 @@ public class GerenciamentoAcademico {
 	public void inserirAlunoNoSistema(Aluno aluno) {
 		this.alunosRP.add(aluno);
 		if(this.alunosRP == null) {
-			System.out.println("nada inserido");
+			System.out.println("---------------------------------------NADA INSERIDO");
 		}
 	}
-	
+	//Atualiza os dados de um aluno
+	public void atualizarAluno(Aluno kid) {
+		for(int i=0;i<alunosRP.size();i++){
+			if(kid.getMatricula() == alunosRP.get(i).getMatricula()){
+				alunosRP.get(i).setEndereco(kid.getEndereco());
+				alunosRP.get(i).setTelefone(kid.getTelefone());
+				alunosRP.get(i).setSenha(kid.getSenha());
+			}
+		}
+	}
+	//Atualiza os dados de um professor
+	public void atualizarProfessor(Professor prof) {
+		for(int i=0;i<professoresRP.size();i++){
+			if(prof.getMatricula() == professoresRP.get(i).getMatricula()){
+				professoresRP.get(i).setEndereco(prof.getEndereco());
+				professoresRP.get(i).setTelefone(prof.getTelefone());
+				professoresRP.get(i).setSenha(prof.getSenha());
+			}
+		}
+	}
 	//Lista todos os alunos que passaram ou ainda estão na instituição
 	public void listarAlunos() {
 		for(int i=0;i<alunosRP.size();i++){
 			Aluno aux = alunosRP.get(i);
 			System.out.println(aux.getNome() + " " + aux.getMatricula());
 		}
+		if(this.alunosRP == null) {
+			System.out.println("---------------------------------------NADA INSERIDO");
+		}
 	}
 	
 	//Registra permanentemente um professor na instituição
 	public void inserirProfessorNoSistema(Professor prof) {
 			this.professoresRP.add(prof);
-			if(turmas == null) {
-				System.out.println("Tais iludida");
+	}
+	
+	//Registra um aluno numa turma
+	public void inserirAlunoNaTurma(String codigo, int matricula) {
+		for(int i = 0; i < turmas.size(); i++) {
+			Turma aux = turmas.get(i);
+			if(aux.getCodigo().equals(codigo)) {
+				for(int k = 0; k < alunosRP.size(); k ++) {
+					if(matricula == alunosRP.get(k).getMatricula() ) {
+						turmas.get(i).inserirAlunos(alunosRP.get(k));
+						System.out.println("---------------------------------------ALUNO INSERIDO.");
+						break;
+					}
+				}
+				break;
 			}
+			else {
+				System.out.println("---------------------------------------TURMA NÃO ENCONTRADA.");
+			}
+		}
+	}
+	
+	public void removerAluno(String codigo, int matricula) {
+		for(int i = 0; i < turmas.size(); i++) {
+			Turma aux = turmas.get(i);
+			if(aux.getCodigo().equals(codigo)) {
+				for(int k = 0; k < alunosRP.size(); k ++) {
+					if(matricula == alunosRP.get(k).getMatricula() ) {
+						turmas.get(i).removerAluno(matricula);
+					}
+				}
+			}
+		}
 	}
 	
 	//Registra um professor numa turma
@@ -50,14 +102,14 @@ public class GerenciamentoAcademico {
 				for(int k = 0; k < professoresRP.size(); k ++) {
 					if(matricula == professoresRP.get(k).getMatricula() ) {
 						turmas.get(i).inserirProfessor(professoresRP.get(k));
-						System.out.println("Professor encontrado.");
+						System.out.println("---------------------------------------PROFESSOR INSERIDO.");
 						break;
 					}
 				}
 				break;
 			}
 			else {
-				System.out.println("Turma não encontrada.");
+				System.out.println("---------------------------------------TURMA NÃO ENCONTRADA.");
 			}
 		}
 	}
@@ -73,42 +125,76 @@ public class GerenciamentoAcademico {
 			}
 		}
 	}
-	public void removerProfessor(String codigo) {
+	//Remover um professor de uma turma 
+	public void removerProfessor(String codigo, int matricula) {
 		for(int i = 0; i<turmas.size();i++) {
 			Turma aux = turmas.get(i);
 			if(aux.getCodigo().equals(codigo)){
-				aux.setProf(null);
+				turmas.get(i).removerProfessor(matricula);
 			}else {
-				System.out.println("Turma não encontrada");
+				System.out.println("---------------------------------------TURMA NÃO ENCONTRADA.");
 			}
 		}
 	}
 	//Lista todos os professores que passaram ou ainda estão na instituição
 	public void listarProfessores() {
+		System.out.println("------------PROFESSORES CADASTRADOS------------");
 		for(int i= 0; i < professoresRP.size(); i++) {
 			Professor aux = professoresRP.get(i);
-			System.out.println(aux.getNome() + " " + aux.getMatricula());
+			System.out.println(i + " " + aux.getNome() + "MATRÍCULA: " + aux.getMatricula());
 		}
 	}
 	//Inserir turma no sistema 
 	public void inserirTurma(Turma turma) {
 		this.turmas.add(turma);
-		if(turmas == null) {
-			System.out.println("Tais iludida");
+	}
+	//Atualizar uma turma
+	public void atualizarTurma(String codigo, int sala) {
+		for(int i = 0; i < turmas.size(); i++) {
+			if(turmas.get(i).getCodigo().equals(codigo)) {
+				turmas.get(i).setSala(sala);
+			}else {
+				System.out.println("---------------------------------------TURMA NÃO ENCONTRADA.");
+			}
 		}
 	}
-	
+	//Remover uma turma
+	public void removerTurma(String codigo) {
+		for(int i = 0; i < turmas.size(); i++) {
+			if(turmas.get(i).getCodigo().equals(codigo)) {
+				if(turmas == null) {
+					turmas.remove(turmas.get(i));
+				}
+			}
+		}
+	}
 	//Listar turmas do sistema
 	public void listarTurmas() {
 		if(turmas == null) {
-			System.out.println("Não há turmas cadastradas. ");
+			System.out.println("NÃO HÁ TURMAS CADASTRADAS. ");
 		}else {
+			System.out.println("------------ TURMAS CADASTRADAS ------------");
 			for(int i = 0; i < turmas.size(); i++) {
 				Turma aux = turmas.get(i);
-				System.out.println(aux.getDescricao() + " CÓDIGO DA TURMA: " + i);
+				System.out.println(i + " " + aux.getDescricao() + " CÓDIGO DA TURMA: " + aux.getCodigo());
 			}
 		}
-		System.out.println("Quantidade de turmas cadastradas." + turmas.size());
+		System.out.println("QUANTIDADE DE TURMAS CADASTRADsAS: " + turmas.size());
+	}
+	public void listarTurmasDoAluno(int matricula) {
+		if(turmas == null) {
+			System.out.println("NÃO HÁ TURMAS CADASTRADAS. ");
+		}else {
+			System.out.println("------------ TURMAS CADASTRADAS ------------");
+			for(int i = 0; i < turmas.size(); i++) {
+				for(int k = 0; k < alunosRP.size(); k++) {
+					if(matricula == alunosRP.get(k).getMatricula()) {
+						System.out.println(i + " " + turmas.get(i).getDescricao() + " CÓDIGO DA TURMA: " + turmas.get(i).getCodigo());
+					}
+				}
+			}
+		}
+		System.out.println("QUANTIDADE DE TURMAS CADASTRADAS: " + turmas.size());
 	}
 
 }
