@@ -23,7 +23,7 @@ public class Turma {
 	
 
 	public ArrayList<Aluno> getAlunos() {
-		return alunos;
+		return this.alunos;
 	}
 
 	public void setAlunos(ArrayList<Aluno> alunos) {
@@ -73,25 +73,7 @@ public class Turma {
 //------------------------------------------ MÃ‰TODO DE ALUNO --------------------------------
 	//Insere um aluno
 	public void inserirAlunos(Aluno aluno) {
-		Boolean temOUnao = false;
-		for(int i = 0; i < alunos.size(); i++) {
-			Aluno teste = alunos.get(i);
-			
-			if(teste.getMatricula() == aluno.getMatricula()) {
-				temOUnao = true;
-			}else {
-				temOUnao = false;
-			}
-		}
-		if(temOUnao) {
-			System.out.println("Aluno já matriculado.");
-		}else {
-			alunos.add(aluno);
-		}
-		if(alunos.contains(aluno)) {
-			System.out.println("Aluno inserido.");
-		}
-		
+		alunos.add(aluno);
 	}
 	/*
 	public Aluno buscarAluno(int matricula) {
@@ -118,6 +100,16 @@ public class Turma {
 		}
 		System.out.println(alunos.size());
 		
+	}
+	//Busca um aluno na turma
+	public int buscarAlunos(int matricula) {
+		int taAqui = 0;
+		for(int i = 0; i < alunos.size(); i++) {
+			if(alunos.get(i).getMatricula() == matricula) {
+				taAqui = alunos.get(i).getMatricula();
+			}
+		}
+		return taAqui;
 	}
 	
 	public void removerAluno(int matricula) {
