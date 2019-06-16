@@ -18,11 +18,7 @@ public class GerenciamentoAcademico {
 		this.alunosRP = alunosRP;
 	}
 	
-	public void exibirAdm() {
-		for(int i=0;i<adm.size();i++){
-			System.out.println(adm.get(i).getNome() + " " + adm.get(i).getMatricula());
-		}
-	}
+	
 	//logar
 	public int logar(int matricula, String senha) {
 		int podeEntrar = 0;
@@ -30,7 +26,8 @@ public class GerenciamentoAcademico {
 			for(int i=0;i<professoresRP.size();i++){
 				if(professoresRP.get(i).getMatricula() == matricula && professoresRP.get(i).getSenha() == senha) {
 					podeEntrar = 1;
-					System.out.println("É PROFESSOR");
+				}else {
+					System.out.println("SENHA OU MATRÍCULA INVÁVLIDOS.");
 				}
 			}
 		}
@@ -38,19 +35,19 @@ public class GerenciamentoAcademico {
 			for(int i=0;i<alunosRP.size();i++){
 				if(alunosRP.get(i).getMatricula() == matricula && alunosRP.get(i).getSenha() == senha) {
 					podeEntrar = 2;
-					System.out.println("É ALUNO");
+				}else {
+					System.out.println("SENHA OU MATRÍCULA INVÁVLIDOS.");
 				}
 			}
 		}
 		if(matricula < 3) {
 			for(int i=0;i<adm.size();i++){
-				if(adm.get(i).getMatricula() == matricula && adm.get(i).getSenha().equals(senha)) {
+				if(adm.get(i).getMatricula() == matricula && adm.get(i).getSenha() == senha) {
 					podeEntrar = 3;
+				}else {
+					System.out.println("SENHA OU MATRÍCULA INVÁVLIDOS.");
 				}
 			}
-		}
-		if(podeEntrar == 0) {
-			System.out.println("SENHA OU USUÁRIO INVÁLIDOS");
 		}
 		return podeEntrar;
 	}
