@@ -7,6 +7,7 @@ public class Turma {
 	private int sala;
 	private String codigo;
 	private Professor prof; 
+	private ArrayList<String> notas = new ArrayList();
 	private ArrayList<Aluno> alunos = new ArrayList();
 	
 	public Turma() {
@@ -70,11 +71,28 @@ public class Turma {
 		this.sala = sala;
 	}
 
-//------------------------------------------ MÉTODO DE ALUNO --------------------------------
+	public ArrayList<String> getNotas() {
+		return notas;
+	}
+
+	public void setNotas(ArrayList<String> notas) {
+		this.notas = notas;
+	}
+
+	//------------------------------------------ MÉTODO DE ALUNO --------------------------------
 	//Insere um aluno
 	public void inserirAlunos(Aluno aluno) {
 		alunos.add(aluno);
 	}
+	public void inserirNota(String nota) {
+		notas.add(nota);
+	}
+	public void listarNotas() {
+		for(int i = 0; i < notas.size(); i++) {
+			System.out.println("NOTA: " + notas.get(i));
+		}
+	}
+	
 	/*
 	public Aluno buscarAluno(int matricula) {
 		Aluno kid = null;
@@ -110,6 +128,24 @@ public class Turma {
 			}
 		}
 		return taAqui;
+	}
+	//Busca um aluno na turma
+	public int buscarProfessor(int matricula) {
+		int taAqui = 0;
+		if(this.prof.getMatricula() == matricula) {
+			taAqui = 1;
+		}
+		return taAqui;
+	}
+	//Busca um aluno na turma pelo nome
+	public Aluno buscarAluno(String nome) {
+		Aluno aux = null;
+		for(int i = 0; i < alunos.size(); i++) {
+			if(alunos.get(i).getNome().equals(nome)) {
+				aux = alunos.get(i);
+			}
+		}
+		return aux;
 	}
 	
 	public void removerAluno(int matricula) {

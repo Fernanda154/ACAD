@@ -19,35 +19,41 @@ public class GerenciamentoAcademico {
 	}
 	
 	
+	//FUNï¿½ï¿½ES DO SISTEMA-----------------------------------------------------------------------------------------------------------------------------------------------
+	public void exibirAdm() {
+		for(int i=0;i<adm.size();i++){
+			System.out.println(adm.get(i).getNome() + " " + adm.get(i).getMatricula());
+		}
+	}
 	//logar
 	public int logar(int matricula, String senha) {
 		int podeEntrar = 0;
 		if(matricula < 200 && matricula > 3) {
 			for(int i=0;i<professoresRP.size();i++){
-				if(professoresRP.get(i).getMatricula() == matricula && professoresRP.get(i).getSenha() == senha) {
+				if(professoresRP.get(i).getMatricula() == matricula && professoresRP.get(i).getSenha().equals(senha)) {
 					podeEntrar = 1;
-				}else {
-					System.out.println("SENHA OU MATRÍCULA INVÁVLIDOS.");
+					System.out.println("ï¿½ PROFESSOR");
 				}
 			}
+			
 		}
 		if(matricula > 200) {
 			for(int i=0;i<alunosRP.size();i++){
-				if(alunosRP.get(i).getMatricula() == matricula && alunosRP.get(i).getSenha() == senha) {
+				if(alunosRP.get(i).getMatricula() == matricula && alunosRP.get(i).getSenha().equals(senha)) {
 					podeEntrar = 2;
-				}else {
-					System.out.println("SENHA OU MATRÍCULA INVÁVLIDOS.");
+					System.out.println("ï¿½ ALUNO");
 				}
 			}
 		}
 		if(matricula < 3) {
 			for(int i=0;i<adm.size();i++){
-				if(adm.get(i).getMatricula() == matricula && adm.get(i).getSenha() == senha) {
+				if(adm.get(i).getMatricula() == matricula && adm.get(i).getSenha().equals(senha)) {
 					podeEntrar = 3;
-				}else {
-					System.out.println("SENHA OU MATRÍCULA INVÁVLIDOS.");
 				}
 			}
+		}
+		if(podeEntrar == 0) {
+			System.out.println("SENHA OU USUï¿½RIO INVï¿½LIDOS");
 		}
 		return podeEntrar;
 	}
@@ -57,8 +63,8 @@ public class GerenciamentoAcademico {
 			System.out.println("---------------------------------------NADA INSERIDO");
 		}
 	}
-
-	//Registra permanentemente um aluno aluno na instituição
+//FUNï¿½ï¿½ES DE ALUNO -----------------------------------------------------------------------------------------------------------------------------------------------
+	//Registra permanentemente um aluno aluno na instituiï¿½ï¿½o
 	public void inserirAlunoNoSistema(Aluno aluno) {
 		this.alunosRP.add(aluno);
 		if(this.alunosRP == null) {
@@ -75,17 +81,33 @@ public class GerenciamentoAcademico {
 			}
 		}
 	}
-	//Atualiza os dados de um professor
-	public void atualizarProfessor(Professor prof) {
-		for(int i=0;i<professoresRP.size();i++){
-			if(prof.getMatricula() == professoresRP.get(i).getMatricula()){
-				professoresRP.get(i).setEndereco(prof.getEndereco());
-				professoresRP.get(i).setTelefone(prof.getTelefone());
-				professoresRP.get(i).setSenha(prof.getSenha());
+	//Registra um aluno numa turma
+	public void inserirAlunoNaTurma(String codigo, int matricula) {
+		for(int i = 0; i < turmas.size(); i++) {
+			Turma aux = turmas.get(i);
+			if(aux.getCodigo().equals(codigo)) {
+				for(int k = 0; k < alunosRP.size(); k ++) {
+					if(matricula == alunosRP.get(k).getMatricula() ) {
+						turmas.get(i).inserirAlunos(alunosRP.get(k));
+						alunosRP.get(k).setRegistroDisciplinas(turmas.get(i).getDescricao());
+						System.out.println("---------------------------------------ALUNO INSERIDO.");
+						break;
+					}
+				}
+				break;
 			}
 		}
 	}
-	//Lista todos os alunos que passaram ou ainda estão na instituição
+	
+	public void removerAlunoDeTurma(int matricula, String codigo) {
+		for(int i = 0; i < turmas.size(); i++) {
+			if(turmas.get(i).getCodigo().equals(codigo)) {
+				turmas.get(i).removerAluno(matricula);
+			}
+		}
+	}
+	
+	//Lista todos os alunos que passaram ou ainda estï¿½o na instituiï¿½ï¿½o
 	public void listarAlunos() {
 		for(int i=0;i<alunosRP.size();i++){
 			Aluno aux = alunosRP.get(i);
@@ -101,38 +123,41 @@ public class GerenciamentoAcademico {
 		ArrayList<Aluno> alunos = new ArrayList<Aluno>(); 
 		for(int i = 0; i < turmas.size(); i++) {
 			if(turmas.get(i).getCodigo() == codigo) {
-				for(int k = 0; k < turmas.get(i).getAlunos().size(); k++) {
-					System.out.println( turmas.get(i).getAlunos().get(k).getNome() + "MATRÍCULA: " + turmas.get(i).getAlunos().get(k).getMatricula());
+				alunos = turmas.get(i).getAlunos();
+				for(int k = 0; k < alunos.size(); k++) {
+					System.out.println( alunos.get(k).getNome() + " MATRï¿½CULA: " + alunos.get(k).getMatricula());
 					
 				}
 			}
 		}
 	}
-	
-	//Registra permanentemente um professor na instituição
-	public void inserirProfessorNoSistema(Professor prof) {
-			this.professoresRP.add(prof);
-	}
-	
-	//Registra um aluno numa turma
-	public void inserirAlunoNaTurma(String codigo, int matricula) {
+	public Aluno buscarAluno(String codigo, String nome) {
+		Aluno aux = null;
 		for(int i = 0; i < turmas.size(); i++) {
-			Turma aux = turmas.get(i);
-			if(aux.getCodigo().equals(codigo)) {
-				for(int k = 0; k < alunosRP.size(); k ++) {
-					if(matricula == alunosRP.get(k).getMatricula() ) {
-						turmas.get(i).inserirAlunos(alunosRP.get(k));
-						System.out.println("---------------------------------------ALUNO INSERIDO.");
-						break;
-					}
-				}
-				break;
-			}
-			else {
-				System.out.println("---------------------------------------TURMA NÃO ENCONTRADA.");
+			if(turmas.get(i).getCodigo().equals(codigo)) {
+				System.out.println("Achei turma");
+				aux = turmas.get(i).buscarAluno(nome);
 			}
 		}
+		if(aux == null) {
+			System.out.println("Achei nada");
+		}
+		return aux;
 	}
+	
+	public void listarTurmasDoAluno(int matricula) {
+		if(turmas == null) {
+			System.out.println("Nï¿½O Hï¿½ TURMAS CADASTRADAS. ");
+		}else {
+			System.out.println("------------ TURMAS CADASTRADAS ------------");
+			for(int i = 0; i < turmas.size(); i++) {
+				if(turmas.get(i).buscarAlunos(matricula) == matricula) {
+					System.out.println(turmas.get(i).getDescricao() + " Cï¿½DIGO: " + turmas.get(i).getCodigo());
+				}
+			}
+		}
+		System.out.println("QUANTIDADE DE TURMAS CADASTRADAS: " + turmas.size());
+	} 
 	
 	public void removerAluno(String codigo, int matricula) {
 		for(int i = 0; i < turmas.size(); i++) {
@@ -145,6 +170,25 @@ public class GerenciamentoAcademico {
 				}
 			}
 		}
+	}
+	
+	//Atualiza os dados de um professor
+	public void atualizarProfessor(Professor prof) {
+		for(int i=0;i<professoresRP.size();i++){
+			if(prof.getMatricula() == professoresRP.get(i).getMatricula()){
+				professoresRP.get(i).setEndereco(prof.getEndereco());
+				professoresRP.get(i).setTelefone(prof.getTelefone());
+				professoresRP.get(i).setSenha(prof.getSenha());
+			}
+		}
+	}
+
+	
+
+	
+	//Registra permanentemente um professor na instituiï¿½ï¿½o
+	public void inserirProfessorNoSistema(Professor prof) {
+			this.professoresRP.add(prof);
 	}
 	
 	//Registra um professor numa turma
@@ -162,20 +206,29 @@ public class GerenciamentoAcademico {
 				}
 				break;
 			}
-			else {
-				System.out.println("---------------------------------------TURMA NÃO ENCONTRADA.");
-			}
 		}
 	}
 	
 	//Lista o professor da turma
-	public void buscarProfessor(String codigo) {
+	public Professor buscarProfessor(String codigo) {
+		Professor auxProf = null;
 		for(int i = 0; i<turmas.size();i++) {
 			Turma aux = turmas.get(i);
 			if(aux.getCodigo().equals(codigo)){
-				String nome = turmas.get(i).getProf().getNome();
-				int matricula = turmas.get(i).getProf().getMatricula();
-				System.out.println(nome + " MATRÍCULA: " + matricula);
+				auxProf =  turmas.get(i).getProf();
+			}
+		}
+		return auxProf;
+	}
+	//Busca todas as turmas nas quais o professor ministra aula
+	public void buscarTurmasDeProfessor(int matricula) {
+		for(int i = 0; i < turmas.size(); i++) {
+			if(turmas.get(i).getProf().getMatricula() == 0) {
+				
+			}
+			if(turmas.get(i).getProf().getMatricula() == matricula) {
+				System.out.println("NOME: "+ turmas.get(i).getDescricao() + " Cï¿½DIGO: " + turmas.get(i).getCodigo());
+				break;
 			}
 		}
 	}
@@ -186,17 +239,17 @@ public class GerenciamentoAcademico {
 			if(aux.getCodigo().equals(codigo)){
 				turmas.get(i).removerProfessor(matricula);
 			}else {
-				System.out.println("---------------------------------------TURMA NÃO ENCONTRADA.");
+				System.out.println("---------------------------------------TURMA Nï¿½O ENCONTRADA.");
 			}
 		}
 	}
 	
-	//Lista todos os professores que passaram ou ainda estão na instituição
+	//Lista todos os professores que passaram ou ainda estï¿½o na instituiï¿½ï¿½o
 	public void listarProfessores() {
 		System.out.println("------------PROFESSORES CADASTRADOS------------");
 		for(int i= 0; i < professoresRP.size(); i++) {
 			Professor aux = professoresRP.get(i);
-			System.out.println(i + " " + aux.getNome() + "MATRÍCULA: " + aux.getMatricula());
+			System.out.println(i + " " + aux.getNome() + "MATRï¿½CULA: " + aux.getMatricula());
 		}
 	}
 	//Inserir turma no sistema 
@@ -209,7 +262,7 @@ public class GerenciamentoAcademico {
 			if(turmas.get(i).getCodigo().equals(codigo)) {
 				turmas.get(i).setSala(sala);
 			}else {
-				System.out.println("---------------------------------------TURMA NÃO ENCONTRADA.");
+				System.out.println("---------------------------------------TURMA Nï¿½O ENCONTRADA.");
 			}
 		}
 	}
@@ -217,8 +270,10 @@ public class GerenciamentoAcademico {
 	public void removerTurma(String codigo) {
 		for(int i = 0; i < turmas.size(); i++) {
 			if(turmas.get(i).getCodigo().equals(codigo)) {
-				if(turmas == null) {
+				if(turmas.get(i).getAlunos() == null) {
 					turmas.remove(turmas.get(i));
+				}else {
+					System.out.println("*****Nï¿½O SE PODE EXCLUIR UMA TURMA CUJA TENHA ALUNOS MATRICULADO*****");
 				}
 			}
 		}
@@ -226,28 +281,92 @@ public class GerenciamentoAcademico {
 	//Listar turmas do sistema
 	public void listarTurmas() {
 		if(turmas == null) {
-			System.out.println("NÃO HÁ TURMAS CADASTRADAS. ");
+			System.out.println("Nï¿½O Hï¿½ TURMAS CADASTRADAS. ");
 		}else {
 			System.out.println("------------ TURMAS CADASTRADAS ------------");
 			for(int i = 0; i < turmas.size(); i++) {
 				Turma aux = turmas.get(i);
-				System.out.println(i + " " + aux.getDescricao() + " CÓDIGO DA TURMA: " + aux.getCodigo());
+				System.out.println(i + " " + aux.getDescricao() + " Cï¿½DIGO DA TURMA: " + aux.getCodigo());
 			}
 		}
 		System.out.println("QUANTIDADE DE TURMAS CADASTRADsAS: " + turmas.size());
 	}
-	public void listarTurmasDoAluno(int matricula) {
-		if(turmas == null) {
-			System.out.println("NÃO HÁ TURMAS CADASTRADAS. ");
-		}else {
-			System.out.println("------------ TURMAS CADASTRADAS ------------");
-			for(int i = 0; i < turmas.size(); i++) {
-				if(turmas.get(i).buscarAlunos(matricula) == matricula) {
-					System.out.println(turmas.get(i).getDescricao() + " CÓDIGO: " + turmas.get(i).getCodigo());
+	
+
+	public void inserirFrequencia(String codigo, int matricula, boolean presenca) {
+		ArrayList<Aluno>aux = new ArrayList();
+		for(int i = 0; i < turmas.size(); i++) {
+			if(turmas.get(i).getCodigo().equals(codigo)) {
+				aux = turmas.get(i).getAlunos();
+				for(int e = 0; e < aux.size(); e++) {
+					if(aux.get(e).getMatricula() == matricula) {
+						aux.get(e).inserirFrequencia(presenca);
+						System.out.println(aux.get(e).exibirFrequencia() + "%" );
+					}
 				}
 			}
 		}
-		System.out.println("QUANTIDADE DE TURMAS CADASTRADAS: " + turmas.size());
 	}
+
+	public void inserirNota(String codigo, int matricula, String nota) {
+		ArrayList<Aluno>aux = new ArrayList();
+		for(int i = 0; i < turmas.size(); i++) {
+			if(turmas.get(i).getCodigo().equals(codigo)) {
+				aux = turmas.get(i).getAlunos();
+				for(int e = 0; e < aux.size(); e++) {
+					if(aux.get(e).getMatricula() == matricula) {
+						aux.get(e).inserirNota( nota, turmas.get(i).getDescricao());
+						aux.get(e).buscarNotas(turmas.get(i).getDescricao());
+					}
+				}
+			}
+		}
+		
+	}
+	public void atualizarNota(String codigo, int matricula, String nota, String notaAntiga) {
+		ArrayList<Aluno>aux = new ArrayList();
+		for(int i = 0; i < turmas.size(); i++) {
+			if(turmas.get(i).getCodigo().equals(codigo)) {
+				aux = turmas.get(i).getAlunos();
+				for(int e = 0; e < aux.size(); e++) {
+					if(aux.get(e).getMatricula() == matricula) {
+						aux.get(e).atualizarNota( nota, turmas.get(i).getDescricao(), notaAntiga);
+						
+					}
+				}
+			}
+		}
+		
+	}
+	public void buscarNota(String codigo, int matricula) {
+		ArrayList<Aluno>aux = new ArrayList();
+		for(int i = 0; i < turmas.size(); i++) {
+			if(turmas.get(i).getCodigo().equals(codigo)) {
+				aux = turmas.get(i).getAlunos();
+				for(int e = 0; e < aux.size(); e++) {
+					if(aux.get(e).getMatricula() == matricula) {
+						aux.get(e).buscarNotas(turmas.get(i).getDescricao());
+					}
+				}
+			}
+		}
+	}
+	public double exibirFrequencia(String codigo, int matricula) {
+		ArrayList<Aluno>aux = new ArrayList();
+		double media = 0;
+		for(int i = 0; i < turmas.size(); i++) {
+			if(turmas.get(i).getCodigo().equals(codigo)) {
+				aux = turmas.get(i).getAlunos();
+				for(int e = 0; e < aux.size(); e++) {
+					if(aux.get(e).getMatricula() == matricula) {
+						System.out.println(aux.get(e).exibirFrequencia());
+					}
+				}
+			}
+		}
+		return media;
+		
+	}
+
 
 }

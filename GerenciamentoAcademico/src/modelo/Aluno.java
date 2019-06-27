@@ -1,13 +1,14 @@
 package modelo;
 
+import java.util.ArrayList;
+
 public class Aluno extends Pessoa {
 	private int matricula;
-	private double[] notas;
-	private double frequencia;
-
+	private String [][] notas = new String[7][14];
+	private ArrayList<Boolean>frequencia = new ArrayList();
 	private int faltas;
 	private boolean atuante;
-	
+	private ArrayList<Turma>turmasAluno = new ArrayList();
 	public Aluno() {
 		
 	}
@@ -39,34 +40,77 @@ public class Aluno extends Pessoa {
 	public void setMatricula(int matricula) {
 		this.matricula = matricula;
 	}
-	public double[] getNotas() {
+
+	public String[][] getNotas() {
 		return notas;
 	}
+	
 
-	public void setNotas(double[] notas) {
-		this.notas = notas;
-	}
-
-	public double getFrequencia() {
-		return frequencia;
-	}
-
-	public void setFrequencia(double frequencia) {
-		this.frequencia = frequencia;
+	public void setRegistroDisciplinas(String nome) {
+		Turma aux = new Turma();
+		aux.setDescricao(nome);
+		turmasAluno.add(aux);
 	}
 	
 	
 	//------------------------------   MÉTODOS PARA NOTA ------------------------------
-	public void inserirNota(String matricula, double nota) {
-		//insere uma nota a partir de uma matricula.
+	public void inserirNota(String nota, String nomeDisciplina) {
+		for(int i = 0; i < turmasAluno.size(); i++) {
+			if(turmasAluno.get(i).getDescricao().equals(nomeDisciplina)) {
+				turmasAluno.get(i).inserirNota(nota);
+			}
+			else {
+				System.out.println("NAO ACHEI");
+			}
+		}
 	}
-	public void atualizarNota(String matricula, double novaNota) {
+	public void atualizarNota(String nota, String nomeDisciplina, String notaAntiga) {
+		ArrayList notas = new ArrayList();
+		for(int i = 0; i < turmasAluno.size(); i++) {
+			if(turmasAluno.get(i).getDescricao().equals(nomeDisciplina)) {
+				notas = turmasAluno.get(i).getNotas();
+				for(int e = 0; e < notas.size(); e++) {
+					if(notas.get(e).equals(notaAntiga)) {
+						turmasAluno.get(i).inserirNota(nota);
+					}
+				}
+				turmasAluno.get(i).inserirNota(nota);
+			}
+			else {
+				System.out.println("NAO ACHEI");
+			}
+		}
+	}
+	public void listarTurmas() {
+		for(int i = 0; i < turmasAluno.size(); i++) {
+			System.out.println(turmasAluno.get(i).getDescricao());
+		}
+	}
+	public void atualizarNota(int matricula, double novaNota) {
 		//Insere nova nota a partir de uma matricula
 	}
-	public double[] buscarNotas(String matricula) {
-		//Retorna as notas associadas a uma matricula.
-		return this.notas;
+	public void buscarNotas(String nome) {
+		for(int i = 0; i < turmasAluno.size(); i++) {
+			if(turmasAluno.get(i).getDescricao().equals(nome)) {
+				turmasAluno.get(i).listarNotas();
+			}
+		}
 	}
 	
+	//-------------------------------------------------------------------------
+	public void inserirFrequencia(boolean presenca) {
+		frequencia.add(presenca);
+	}
+	public double exibirFrequencia() {
+		int totalAulas = frequencia.size();
+		int aulasAssistidas = 0;
+		for(int i = 0; i < frequencia.size();i++) {
+			if(frequencia.get(i) == true) {
+				aulasAssistidas = aulasAssistidas + 1;
+			}
+		}
+		double media = (aulasAssistidas*100)/totalAulas;
+		return media;
+	}
 
 }
